@@ -47,7 +47,7 @@
     {
       "type": "ansible",
       "user": "root",
-      "playbook_file": "./ansible/playbook_local.yml",
+      "playbook_file": "./ansible/playbook.yml",
       "extra_arguments": [
         "--extra-vars",
         "ansible_host={{user `ansible_host`}} ansible_connection={{user `ansible_connection`}}"
