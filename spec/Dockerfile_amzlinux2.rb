@@ -1,50 +1,26 @@
 # spec/Dockerfile_spec.rb
 
-require "serverspec"
-require "docker"
-
-Docker.validate_version!
+require_relative "spec_helper"
 
 describe "Dockerfile" do
   before(:all) do
-    image = Docker::Image.get(
-      ENV['DOCKER_USERNAME'] + "/" + ENV['PACKAGE'] + ":" + ENV['PACKAGE_VERSION'] + "-" + ENV['IMAGE_NAME']
-    )
-
-    # https://github.com/mizzy/specinfra
-    # https://docs.docker.com/engine/api/v1.24/#31-containers
-    # https://github.com/swipely/docker-api
-    # https://serverspec.org/resource_types.html
+    load_docker_image()
     set :os, family: :redhat
-    set :backend, :docker
-    set :docker_image, image.id
   end
 
-  def os_version
-    command("cat /etc/centos-release").stdout
-  end
-
-  def sys_user
-    command("whoami").stdout.strip
-  end
-
-  def tomcat_version
-    command("cd /usr/local/tomcat/lib && java -cp catalina.jar org.apache.catalina.util.ServerInfo").stdout
-  end
-
-
-
-  it "installs the right version of Centos" do
-    expect(os_version).to include("CentOS")
-    expect(os_version).to include("7.6")
+  describe "Dockerfile#running" do
+    it "runs the right version of Amazon Linux" do
+      expect(os_version).to include("Amazon Linux")
+      expect(os_version).to include("Linux 2")
+    end
+    it "runs as service user" do
+      package_name = ENV['PACKAGE_NAME']
+      expect(sys_user).to eql(package_name)
+    end
   end
 
   it "installs tomcat version" do
     expect(tomcat_version).to include(ENV['PACKAGE_VERSION'])
-  end
-
-  it "runs as tomcat user" do
-    expect(sys_user).to eql("tomcat")
   end
 
   describe user('tomcat') do

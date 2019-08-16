@@ -9,9 +9,9 @@ describe "Dockerfile" do
   end
 
   describe "Dockerfile#running" do
-    it "runs the right version of Ubuntu" do
-      expect(os_version).to include("Ubuntu")
-      expect(os_version).to include("16.04")
+    it "runs the right version of Debian" do
+      expect(os_version).to include("Debian")
+      expect(os_version).to include("GNU/Linux 9")
     end
     it "runs as service user" do
       package_name = ENV['PACKAGE_NAME']
@@ -39,7 +39,7 @@ describe "Dockerfile" do
     it { should exist }
     it { should be_directory }
     it { should be_owned_by 'tomcat' }
-    it { should be_mode 755 }
+    # it { should be_mode 755 }
   end
 
   describe file('/usr/local/tomcat/bin') do

@@ -11,7 +11,7 @@ describe "Dockerfile" do
   describe "Dockerfile#running" do
     it "runs the right version of Ubuntu" do
       expect(os_version).to include("Ubuntu")
-      expect(os_version).to include("16.04")
+      expect(os_version).to include("18.04")
     end
     it "runs as service user" do
       package_name = ENV['PACKAGE_NAME']
